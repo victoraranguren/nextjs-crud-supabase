@@ -21,12 +21,20 @@ import { Textarea } from "@/components/ui/textarea";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function TaskForm({ task }) {
   const [name, setName] = useState<any>("");
   const [description, setDescription] = useState<any>("");
   const [priority, setPriority] = useState<any>("");
+
+  useEffect(() => {
+    if (task) {
+      setName(task?.name);
+      setDescription(task?.description);
+      setPriority(task?.priority);
+    }
+  }, []);
 
   const createTask = async (e) => {
     e.preventDefault();
