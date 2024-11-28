@@ -16,6 +16,14 @@ function Navbar() {
         <Link href="/new" className={buttonVariants({ variant: "secondary" })}>
           Create Task
         </Link>
+
+        <Link
+          href="/table-view"
+          className={buttonVariants({ variant: "secondary" })}
+        >
+          Table View
+        </Link>
+
         <ModeToggle />
       </div>
     </nav>

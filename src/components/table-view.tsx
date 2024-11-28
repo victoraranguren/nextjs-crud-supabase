@@ -7,6 +7,16 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import dayjs from "dayjs";
+
 const TableView = ({ tasks }) => {
   const columnHelper = createColumnHelper();
 
@@ -36,35 +46,68 @@ const TableView = ({ tasks }) => {
 
   return (
     <div>
-      <table>
-        <thead>
-          {table?.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th key={header.id} colSpan={header.colSpan}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
+      <h2 className="text-2xl font-bold">Table View</h2>
+      <Table>
+        <TableHeader>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
+                return (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                );
+              })}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && "selected"}
+              >
+                {row.getVisibleCells().map((cell) => {
+                  if (cell.column.id == "created_at") {
+                    console.log(dayjs(cell.getValue()).format("DD/MM/YY"));
+                    return (
+                      <TableCell key={cell.id}>
+                        {cell.column.id == "created_at"
+                          ? dayjs(cell.getValue()).format("DD/MM/YY")
+                          : flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )}
+                      </TableCell>
+                    );
+                  }
+
+                  return (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
                       )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table?.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center">
+                No results.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
     </div>
   );
 };
