@@ -53,13 +53,25 @@ const TableView = ({ tasks }) => {
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
+                  <TableHead
+                    key={header.id}
+                    colSpan={header.colSpan}
+                    onClick={header.column.getToggleSortingHandler()}
+                  >
+                    {header.isPlaceholder ? null : (
+                      <div>
+                        {flexRender(
                           header.column.columnDef.header,
                           header.getContext()
                         )}
+                        {
+                          {
+                            asc: "⬆️",
+                            desc: "⬇️",
+                          }[header.column.getIsSorted() ?? null]
+                        }
+                      </div>
+                    )}
                   </TableHead>
                 );
               })}
