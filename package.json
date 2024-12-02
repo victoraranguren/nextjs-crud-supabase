@@ -15,7 +15,6 @@
     "@supabase/supabase-js": "latest",
     "@tanstack/react-table": "^8.20.5",
     "autoprefixer": "10.4.20",
-    "axios": "^1.7.8",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",

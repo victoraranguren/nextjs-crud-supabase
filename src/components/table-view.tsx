@@ -16,10 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import dayjs from "dayjs";
-
-import type { Database } from "@/app/db/db.types";
-
-type Task = Database["public"]["Tables"]["tasks"]["Row"];
+import { Task } from "@/app/db/db.types";
 
 const TableView = ({ tasks }: { tasks: Task[] }) => {
   const columnHelper = createColumnHelper();

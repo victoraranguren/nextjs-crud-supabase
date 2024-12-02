@@ -1,7 +1,6 @@
 import { revalidatePath } from "next/cache";
 import { Button } from "./ui/button";
 import { createClient } from "@/utils/supabase/client";
-import axios from "axios";
 
 export const TaskButtonDelete = ({ taskId }: { taskId: number }) => {
   const deleteTask = async () => {
@@ -9,11 +8,21 @@ export const TaskButtonDelete = ({ taskId }: { taskId: number }) => {
     const supabase = await createClient();
     const taskDeleted = await supabase.from("tasks").delete().eq("id", taskId);
 
-    console.log(taskDeleted);
+    if (taskDeleted.status == 204) {
+      console.log(`Task Deleted where id is: ${taskId}`);
 
-    axios.post("/api/send").then((res) => console.log(res));
+      const emailSending = await fetch("http://localhost:3000/api/send", {
+        method: "POST",
+      });
 
-    revalidatePath("/");
+      if (emailSending.status == 200) {
+        console.log("Email delivered: ", emailSending);
+
+        revalidatePath("/");
+      }
+    } else {
+      console.error("Error deleting task");
+    }
   };
   return (
     <form action={deleteTask}>

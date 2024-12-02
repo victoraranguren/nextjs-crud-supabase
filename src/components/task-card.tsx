@@ -10,6 +10,7 @@ import {
 import clsx from "clsx";
 import { TaskButtonDelete } from "./task-button-delete";
 import Link from "next/link";
+import { Task } from "@/app/db/db.types";
 
 const TaskCard = ({ task }: { task: Task }) => {
   return (

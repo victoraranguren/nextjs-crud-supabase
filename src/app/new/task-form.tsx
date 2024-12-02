@@ -21,9 +21,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import { Task } from "../db/db.types";
 
-export function TaskForm({ task }) {
+export function TaskForm({ task }: { task?: Task }) {
   const [name, setName] = useState<any>("");
   const [description, setDescription] = useState<any>("");
   const [priority, setPriority] = useState<any>("");
@@ -36,28 +37,28 @@ export function TaskForm({ task }) {
     }
   }, []);
 
-  const createTask = async (e) => {
+  const createTask = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    console.log({ name, description, priority });
 
     const supabase = await createClient();
-    const { data: tasks, error } = await supabase
+    const { data, error } = await supabase
       .from("tasks")
-      .insert([{ name, description, priority }])
+      .insert({ name, description, priority })
       .select();
 
-    console.log(tasks);
+    console.log("Created", data);
 
-    await fetch("/api/send", { method: "POST" });
+    const emailSending = await fetch("/api/send", { method: "POST" });
 
-    redirect("/");
+    if (emailSending.status == 200) {
+      console.log("Email delivered: ", emailSending);
+
+      redirect("/");
+    }
   };
 
-  const updateTask = async (e) => {
+  const updateTask = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    console.log({ name, description, priority });
 
     const supabase = await createClient();
 
@@ -67,11 +68,15 @@ export function TaskForm({ task }) {
       .eq("id", task?.id)
       .select();
 
-    console.log(data);
+    console.log("Edited", data);
 
-    await fetch("/api/send", { method: "POST" });
+    const emailSending = await fetch("/api/send", { method: "POST" });
 
-    redirect("/");
+    if (emailSending.status == 200) {
+      console.log("Email delivered: ", emailSending);
+
+      redirect("/");
+    }
   };
 
   const functionAction = task?.id ? updateTask : createTask;
@@ -93,7 +98,7 @@ export function TaskForm({ task }) {
                 name="name"
                 id="name"
                 placeholder="Name of your task"
-                defaultValue={task?.name}
+                defaultValue={task?.name || ""}
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
@@ -111,7 +116,7 @@ export function TaskForm({ task }) {
               <Label htmlFor="framework">Priority</Label>
               <Select
                 name="priority"
-                defaultValue={task?.priority}
+                defaultValue={task?.priority || ""}
                 onValueChange={(value: string) => {
                   setPriority(value);
                 }}
