@@ -1,6 +1,7 @@
 import { revalidatePath } from "next/cache";
 import { Button } from "./ui/button";
 import { createClient } from "@/utils/supabase/client";
+import axios from "axios";
 
 export const TaskButtonDelete = ({ taskId }: { taskId: number }) => {
   const deleteTask = async () => {
@@ -9,6 +10,9 @@ export const TaskButtonDelete = ({ taskId }: { taskId: number }) => {
     const taskDeleted = await supabase.from("tasks").delete().eq("id", taskId);
 
     console.log(taskDeleted);
+
+    axios.post("/api/send").then((res) => console.log(res));
+
     revalidatePath("/");
   };
   return (

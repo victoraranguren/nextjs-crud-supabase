@@ -49,6 +49,8 @@ export function TaskForm({ task }) {
 
     console.log(tasks);
 
+    await fetch("/api/send", { method: "POST" });
+
     redirect("/");
   };
 
@@ -66,6 +68,8 @@ export function TaskForm({ task }) {
       .select();
 
     console.log(data);
+
+    await fetch("/api/send", { method: "POST" });
 
     redirect("/");
   };
