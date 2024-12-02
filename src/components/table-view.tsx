@@ -5,6 +5,8 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  ColumnDef,
+  AccessorColumnDef,
 } from "@tanstack/react-table";
 
 import {
@@ -17,15 +19,20 @@ import {
 } from "@/components/ui/table";
 import dayjs from "dayjs";
 
-const TableView = ({ tasks }) => {
+import type { Database } from "@/app/db/db.types";
+
+type Task = Database["public"]["Tables"]["tasks"]["Row"];
+
+const TableView = ({ tasks }: { tasks: Task[] }) => {
   const columnHelper = createColumnHelper();
 
-  const columns = [
+  const columns: any[] = [
     columnHelper.accessor("id", {
       header: "id",
     }),
     columnHelper.accessor("created_at", {
       header: "created_at",
+      cell: (info) => dayjs(info.getValue()).format("DD/MM/YY"),
     }),
     columnHelper.accessor("name", {
       header: "name",
@@ -64,12 +71,9 @@ const TableView = ({ tasks }) => {
                           header.column.columnDef.header,
                           header.getContext()
                         )}
-                        {
-                          {
-                            asc: "⬆️",
-                            desc: "⬇️",
-                          }[header.column.getIsSorted() ?? null]
-                        }
+
+                        {header.column.getIsSorted() == "asc" ? "⬆️" : false}
+                        {header.column.getIsSorted() == "desc" ? "⬇️" : false}
                       </div>
                     )}
                   </TableHead>
@@ -86,20 +90,6 @@ const TableView = ({ tasks }) => {
                 data-state={row.getIsSelected() && "selected"}
               >
                 {row.getVisibleCells().map((cell) => {
-                  if (cell.column.id == "created_at") {
-                    console.log(dayjs(cell.getValue()).format("DD/MM/YY"));
-                    return (
-                      <TableCell key={cell.id}>
-                        {cell.column.id == "created_at"
-                          ? dayjs(cell.getValue()).format("DD/MM/YY")
-                          : flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
-                      </TableCell>
-                    );
-                  }
-
                   return (
                     <TableCell key={cell.id}>
                       {flexRender(
