@@ -5,8 +5,6 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
-  ColumnDef,
-  AccessorColumnDef,
 } from "@tanstack/react-table";
 
 import {
