@@ -1,9 +1,13 @@
 "use client";
+import { useState } from "react";
+import { ArrowDown, ArrowUp } from "lucide-react";
 
 import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
+  SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 
@@ -15,28 +19,32 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
 import dayjs from "dayjs";
+
 import { Task } from "@/app/db/db.types";
 
 const TableView = ({ tasks }: { tasks: Task[] }) => {
+  const [sorting, setSorting] = useState<SortingState>([]);
+
   const columnHelper = createColumnHelper();
 
   const columns: any[] = [
     columnHelper.accessor("id", {
-      header: "id",
+      header: "Id",
     }),
     columnHelper.accessor("created_at", {
-      header: "created_at",
+      header: "Created At",
       cell: (info) => dayjs(info.getValue()).format("DD/MM/YY"),
     }),
     columnHelper.accessor("name", {
-      header: "name",
+      header: "Name",
     }),
     columnHelper.accessor("description", {
-      header: "description",
+      header: "Description",
     }),
     columnHelper.accessor("priority", {
-      header: "priority",
+      header: "Priority",
     }),
   ];
 
@@ -44,6 +52,9 @@ const TableView = ({ tasks }: { tasks: Task[] }) => {
     columns,
     data: tasks,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    state: { sorting },
+    onSortingChange: setSorting,
   });
 
   return (
@@ -61,14 +72,22 @@ const TableView = ({ tasks }: { tasks: Task[] }) => {
                     onClick={header.column.getToggleSortingHandler()}
                   >
                     {header.isPlaceholder ? null : (
-                      <div>
+                      <div className="flex items-center">
                         {flexRender(
                           header.column.columnDef.header,
                           header.getContext()
                         )}
 
-                        {header.column.getIsSorted() == "asc" ? "⬆️" : false}
-                        {header.column.getIsSorted() == "desc" ? "⬇️" : false}
+                        {header.column.getIsSorted() == "asc" ? (
+                          <ArrowUp />
+                        ) : (
+                          false
+                        )}
+                        {header.column.getIsSorted() == "desc" ? (
+                          <ArrowDown />
+                        ) : (
+                          false
+                        )}
                       </div>
                     )}
                   </TableHead>
@@ -77,6 +96,7 @@ const TableView = ({ tasks }: { tasks: Task[] }) => {
             </TableRow>
           ))}
         </TableHeader>
+
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
