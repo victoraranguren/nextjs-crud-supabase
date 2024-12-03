@@ -4,6 +4,8 @@ import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 
@@ -16,8 +18,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import dayjs from "dayjs";
+import { useState } from "react";
 
 const TableView = ({ tasks }) => {
+  const [sorting, setSorting] = useState([]);
   const columnHelper = createColumnHelper();
 
   const columns = [
@@ -42,6 +46,9 @@ const TableView = ({ tasks }) => {
     columns,
     data: tasks,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    state: { sorting },
+    onSortingChange: setSorting,
   });
 
   return (
