@@ -46,9 +46,13 @@ export function TaskForm({ task }: { task?: Task }) {
       .insert({ name, description, priority })
       .select();
 
-    console.log("Created", data);
+    console.log("Created", data?.[0].id);
 
-    const emailSending = await fetch("/api/send", { method: "POST" });
+    const emailSending = await fetch("/api/send/created", {
+      method: "POST",
+      body: JSON.stringify({ id: data?.[0].id, name, description, priority }),
+      headers: { "Content-type": "application/json; charset=UTF-8" },
+    });
 
     if (emailSending.status == 200) {
       console.log("Email delivered: ", emailSending);
@@ -70,8 +74,11 @@ export function TaskForm({ task }: { task?: Task }) {
 
     console.log("Edited", data);
 
-    const emailSending = await fetch("/api/send", { method: "POST" });
-
+    const emailSending = await fetch("/api/send/updated", {
+      method: "POST",
+      body: JSON.stringify({ id: task?.id, name, description, priority }),
+      headers: { "Content-type": "application/json; charset=UTF-8" },
+    });
     if (emailSending.status == 200) {
       console.log("Email delivered: ", emailSending);
 

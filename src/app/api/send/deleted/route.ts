@@ -1,15 +1,17 @@
-import { EmailTemplate } from "@/components/email-template";
+import { EmailTemplateDeleted } from "@/components/email/email-template-deleted";
+import { NextApiResponse } from "next";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function POST() {
+export async function POST(req: Request, res: NextApiResponse) {
   try {
+    const { id } = await req.json();
     const { data, error } = await resend.emails.send({
       from: "Acme <onboarding@resend.dev>",
       to: ["victoraranguren.dev@gmail.com"],
-      subject: "Hello world",
-      react: EmailTemplate({ firstName: "John" }),
+      subject: "Task Created",
+      react: EmailTemplateDeleted({ id }),
     });
 
     if (error) {
