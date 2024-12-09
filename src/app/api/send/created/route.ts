@@ -9,7 +9,7 @@ export async function POST(req: Request, res: NextApiResponse) {
     const { id, name, description, priority } = await req.json();
     const { data, error } = await resend.emails.send({
       from: "Acme <onboarding@resend.dev>",
-      to: ["victoraranguren.dev@gmail.com"],
+      to: [process.env.RESEND_EMAIL_TEST || ""],
       subject: "Task Created",
       react: EmailTemplateCreated({ id, name, description, priority }),
     });
