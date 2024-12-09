@@ -102,6 +102,7 @@ export function TaskForm({ task }: { task?: Task }) {
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="name">Name</Label>
               <Input
+                required
                 name="name"
                 id="name"
                 placeholder="Name of your task"
@@ -112,6 +113,7 @@ export function TaskForm({ task }: { task?: Task }) {
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="description">Description</Label>
               <Textarea
+                required
                 name="description"
                 id="description"
                 placeholder="Description of your task"
@@ -122,6 +124,7 @@ export function TaskForm({ task }: { task?: Task }) {
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="framework">Priority</Label>
               <Select
+                required
                 name="priority"
                 defaultValue={task?.priority || ""}
                 onValueChange={(value: string) => {
