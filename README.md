@@ -1,6 +1,8 @@
-# CRUD of a to-do list made with NextJS and Supabase
+# Next.js To-Do List with Email Notification
 
-## Features
+![Alt text](images/img-1.png)
+
+## Tech Stack
 
 - Frontend [Next.js](https://nextjs.org)
 - [Supabase](https://supabase.com/) as Database
@@ -8,6 +10,24 @@
 - Email notification with [Resend](https://resend.com/)
 - Styling with [Tailwind CSS](https://tailwindcss.com)
 - Components with [shadcn/ui](https://ui.shadcn.com/)
+
+## Screenshots
+
+Home Page and Dark Mode Activated
+
+![Create Task](images/img-5.png)
+
+Create Task
+
+![Create Task](images/img-2.png)
+
+Table View
+
+![Table View](images/img-3.png)
+
+Update Task and Dark Mode Activated
+
+![Create Task](images/img-4.png)
 
 ## Clone and run locally
 
