@@ -2,6 +2,8 @@
 
 ![Alt text](images/img-1.png)
 
+It is a Web in which you can create, delete, update tasks and when you perform any action you will be notified by email about each action performed, made in NextJS at first with Prisma & SQLite and [migrated to Supabase](https://www.youtube.com/watch?v=w5P7DJEXHGQ) (In this video i show how i made the migration), for email notification uses Resend, layout with Tailwind CSS and uses Shadcn components.
+
 ## Tech Stack
 
 - Frontend [Next.js](https://nextjs.org)
