@@ -2,7 +2,7 @@ import { revalidatePath } from "next/cache";
 import { Button } from "./ui/button";
 import { createClient } from "@/utils/supabase/client";
 
-export const TaskButtonDelete = ({ taskId }: { taskId: string }) => {
+export const TaskButtonDelete = ({ taskId }: { taskId: number }) => {
   const deleteTask = async () => {
     "use server";
     const supabase = await createClient();
